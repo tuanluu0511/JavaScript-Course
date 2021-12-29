@@ -30,6 +30,33 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+// Event propagation
+// Code below change bg color of nav,nav__links & nav__link when click
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('Link', e.target, e.currentTarget);
+});
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('Container', e.target, e.currentTarget);
+});
+
+document.querySelector('.nav').addEventListener(
+  'click',
+  function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log('nav', e.target, e.currentTarget);
+  }
+  // Capture and exectute event in capture phase, initial value: false
+  // true
+);
+/*
 // Types of Events and Even handlers
 const h1 = document.querySelector('h1');
 
@@ -45,6 +72,8 @@ setTimeout(() => h1.removeEventListener('mouseenter', printH1), 10000);
 // h1.onmouseenter = function (e) {
 //   console.log('On mouse enter: youre reading H1');
 // };
+*/
+
 // Implement Scroling
 
 const btnScrollTo = document.querySelector('.btn--scroll-to');
