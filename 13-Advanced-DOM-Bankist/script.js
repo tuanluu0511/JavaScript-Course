@@ -30,6 +30,21 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+// Types of Events and Even handlers
+const h1 = document.querySelector('h1');
+
+const printH1 = function (e) {
+  console.log('addEventListener: Youre reding H1');
+};
+
+h1.addEventListener('mouseenter', printH1);
+
+setTimeout(() => h1.removeEventListener('mouseenter', printH1), 10000);
+
+// Try not to use onmouseenter
+// h1.onmouseenter = function (e) {
+//   console.log('On mouse enter: youre reading H1');
+// };
 // Implement Scroling
 
 const btnScrollTo = document.querySelector('.btn--scroll-to');
