@@ -1,12 +1,13 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+///////////////////////////////////////
+// Modal window
 
 const openModal = function (e) {
   e.preventDefault();
@@ -30,54 +31,8 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// Event propagation
-// Code below change bg color of nav,nav__links & nav__link when click
-const randomInt = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
-const randomColor = () =>
-  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
-
-document.querySelector('.nav__link').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  console.log('Link', e.target, e.currentTarget);
-});
-
-document.querySelector('.nav__links').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  console.log('Container', e.target, e.currentTarget);
-});
-
-document.querySelector('.nav').addEventListener(
-  'click',
-  function (e) {
-    this.style.backgroundColor = randomColor();
-    console.log('nav', e.target, e.currentTarget);
-  }
-  // Capture and exectute event in capture phase, initial value: false
-  // true
-);
-/*
-// Types of Events and Even handlers
-const h1 = document.querySelector('h1');
-
-const printH1 = function (e) {
-  console.log('addEventListener: Youre reding H1');
-};
-
-h1.addEventListener('mouseenter', printH1);
-
-setTimeout(() => h1.removeEventListener('mouseenter', printH1), 10000);
-
-// Try not to use onmouseenter
-// h1.onmouseenter = function (e) {
-//   console.log('On mouse enter: youre reading H1');
-// };
-*/
-
-// Implement Scroling
-
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
+///////////////////////////////////////
+// Button scrolling
 
 btnScrollTo.addEventListener('click', function (e) {
   const s1coords = section1.getBoundingClientRect();
@@ -104,6 +59,74 @@ btnScrollTo.addEventListener('click', function (e) {
   // });
   section1.scrollIntoView({ behavior: 'smooth' });
 });
+
+///////////////////////////////////////
+// Page navigation
+// document.querySelectorAll('.nav__link').forEach(el => {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     const id = this.getAttribute('href');
+//     document.querySelector(`${id}`).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+// The code above will create a click event for every el, so may cause less efficience
+
+// 1. Add event listener to common parent element
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  // 2. Determine what element originated the event
+  console.log(e.target);
+  // Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+/*
+// Event propagation
+// Code below change bg color of nav,nav__links & nav__link when click
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('Link', e.target, e.currentTarget);
+  // e.stopPropagation();
+});
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('Container', e.target, e.currentTarget);
+});
+
+document.querySelector('.nav').addEventListener(
+  'click',
+  function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log('nav', e.target, e.currentTarget);
+  }
+  // Capture and exectute event in capture phase, initial value: false
+  // true
+);
+// Types of Events and Even handlers
+const h1 = document.querySelector('h1');
+
+const printH1 = function (e) {
+  console.log('addEventListener: Youre reding H1');
+};
+
+h1.addEventListener('mouseenter', printH1);
+
+setTimeout(() => h1.removeEventListener('mouseenter', printH1), 10000);
+
+// Try not to use onmouseenter
+// h1.onmouseenter = function (e) {
+//   console.log('On mouse enter: youre reading H1');
+// };
+ */
 
 /*
 // Cookies button
