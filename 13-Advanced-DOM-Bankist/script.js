@@ -83,6 +83,34 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
+// DOM Traversing
+const h1 = document.querySelector('h1');
+// Going downward: child
+console.log(h1.querySelectorAll('.highlight')); //Rerturn  nodelist
+console.log(h1.childNodes); //Rerturn  nodelist
+console.log(h1.children); //Rerturn  HTML Collection
+
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'orangered';
+
+// Going upward: parent
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+// Closet parent
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// Going sideway: Siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = 'scale(0.5)';
+});
 /*
 // Event propagation
 // Code below change bg color of nav,nav__links & nav__link when click
