@@ -6,6 +6,11 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const nav = document.querySelector('.nav');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
 ///////////////////////////////////////
 // Modal window
 
@@ -62,6 +67,16 @@ btnScrollTo.addEventListener('click', function (e) {
 
 ///////////////////////////////////////
 // Page navigation
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  // 2. Determine what element originated the event
+  // console.log(e.target);
+  // Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
 // document.querySelectorAll('.nav__link').forEach(el => {
 //   el.addEventListener('click', function (e) {
 //     e.preventDefault();
@@ -72,22 +87,9 @@ btnScrollTo.addEventListener('click', function (e) {
 // The code above will create a click event for every el, so may cause less efficience
 
 // 1. Add event listener to common parent element
-document.querySelector('.nav__links').addEventListener('click', function (e) {
-  e.preventDefault();
-  // 2. Determine what element originated the event
-  console.log(e.target);
-  // Matching strategy
-  if (e.target.classList.contains('nav__link')) {
-    const id = e.target.getAttribute('href');
-    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-  }
-});
 
 ///////////////////////////////////////
 // Tabbed component
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
 
 tabsContainer.addEventListener('click', function (e) {
   const clicked = e.target.closest('.operations__tab');
@@ -108,6 +110,22 @@ tabsContainer.addEventListener('click', function (e) {
     .classList.add('operations__content--active');
 });
 
+// Menu fade animation
+const handlerHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+};
+
+// Parsing "argument" to handler
+nav.addEventListener('mouseover', handlerHover.bind(0.5));
+nav.addEventListener('mouseout', handlerHover.bind(1));
 /*
 // DOM Traversing
 const h1 = document.querySelector('h1');
