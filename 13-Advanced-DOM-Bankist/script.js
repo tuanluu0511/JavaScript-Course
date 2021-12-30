@@ -110,6 +110,7 @@ tabsContainer.addEventListener('click', function (e) {
     .classList.add('operations__content--active');
 });
 
+///////////////////////////////////////
 // Menu fade animation
 const handlerHover = function (e) {
   if (e.target.classList.contains('nav__link')) {
@@ -127,13 +128,47 @@ const handlerHover = function (e) {
 nav.addEventListener('mouseover', handlerHover.bind(0.5));
 nav.addEventListener('mouseout', handlerHover.bind(1));
 
+///////////////////////////////////////
 // Implement sticky nav bar: Scroll event
-window.addEventListener('scroll', function () {
-  const initialCoords = section1.getBoundingClientRect();
-  if (this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+// window.addEventListener('scroll', function () {
+//   const initialCoords = section1.getBoundingClientRect();
+//   if (this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+//Sticky navigation: Interseciton Observer API
+
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+
+const navSticky = function (entries) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(navSticky, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
 });
+headerObserver.observe(header);
+
 /*
+///////////////////////////////////////
+// Sticky navigation: Interseciton Observer API
+// const obsCallback = function (entries, observer) {
+//   entries.forEach(entry => console.log(entry));
+// };
+
+// const obsOption = {
+//   root: null,
+//   threshold: 0.1,
+// };
+
+// const observer = new IntersectionObserver(obsCallback, obsOption);
+// observer.observe(section1);
+
 // DOM Traversing
 const h1 = document.querySelector('h1');
 // Going downward: child
