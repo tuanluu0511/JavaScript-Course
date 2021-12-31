@@ -160,7 +160,7 @@ const allSection = document.querySelectorAll('.section');
 
 const revealSection = function (entries, observer) {
   const [entry] = entries;
-  console.log(entry);
+  // console.log(entry);
   if (!entry.isIntersecting) return;
 
   entry.target.classList.remove('section--hidden');
@@ -177,6 +177,27 @@ allSection.forEach(section => {
   section.classList.add('section--hidden');
 });
 
+// Lazy loading images
+const imgTargets = document.querySelectorAll('.features__img');
+
+const loadingImg = function (entries, observer) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+  observer.unobserve(entry.target);
+};
+
+const observeImg = new IntersectionObserver(loadingImg, {
+  null: 0,
+  threshold: 0,
+  rootMargin: '200px',
+});
+
+imgTargets.forEach(img => observeImg.observe(img));
 /*
 ///////////////////////////////////////
 // Sticky navigation: Interseciton Observer API
