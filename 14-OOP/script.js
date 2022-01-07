@@ -1,5 +1,33 @@
 'use strict';
 
+// Inheritance Between "Classes": Constructor Functions
+const Person = function (fullName, birthYear) {
+  this.fullName = fullName;
+  this.birthYear = birthYear;
+};
+
+Person.prototype.caclAge = function () {
+  console.log(2037 - this.birthYear);
+};
+
+const Student = function (fullName, birthYear, course) {
+  Person.call(this, fullName, birthYear);
+  this.course = course;
+};
+
+Student.prototype = Object.create(Person.prototype);
+
+Student.prototype.introduce = function () {
+  console.log(`Hi I'm ${this.fullName}, i study ${this.course}`);
+};
+
+const max = new Student('Max', 1996, 'Data Sicence');
+
+Student.prototype.constructor = Student;
+
+max.introduce();
+max.caclAge();
+console.dir(Student.prototype.constructor);
 /*
 // CODING CHALLENGE 2
 
@@ -30,6 +58,8 @@ const car1 = new CarCl('Ford', 120);
 console.log(car1.speedUS);
 car1.speedUS = 50;
 console.log(car1);
+
+///////////////////////////////////
 // Object.create
 
 const PersonProto = {
