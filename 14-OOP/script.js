@@ -1,5 +1,27 @@
 'use strict';
 
+// Object.create
+
+const PersonProto = {
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  },
+
+  init(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  },
+};
+
+const david = Object.create(PersonProto);
+david.name = 'David';
+david.birthYear = 2003;
+david.calcAge();
+
+const laura = Object.create(PersonProto);
+laura.init('Laura', 1975);
+laura.calcAge();
+
 /*
 // Classes expression
 // const PersonCl = class {};
@@ -21,6 +43,8 @@ class PersonCl {
     this.birthYear = birthYear;
   }
 
+  // Instance methods
+  // Methods will be added to .prototype property
   caclAge() {
     console.log(2037 - this.birthYear);
   }
@@ -44,7 +68,14 @@ class PersonCl {
   get fullName() {
     return (this.fullName = this._fullName);
   }
+  // Static method
+  static hey() {
+    console.log('Hey there');
+    console.log(this);
+  }
 }
+
+PersonCl.hey();
 
 const jessica = new PersonCl('Jessica Davis', 1991);
 jessica.age;
@@ -54,7 +85,7 @@ const sarah = new PersonCl('Sarah', 1991);
 sarah.caclAge();
 
 // PersonCl.prototype.greeting = function () {
-//   console.log(`Hello ${this.name}`);
+  //   console.log(`Hello ${this.name}`);
 // };
 sarah.greeting();
 
