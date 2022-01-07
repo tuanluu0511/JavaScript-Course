@@ -1,5 +1,35 @@
 'use strict';
 
+/*
+// CODING CHALLENGE 2
+
+class CarCl {
+  constructor(car, speed) {
+    this.car = car;
+    this.speed = speed;
+  }
+
+  get speedUS() {
+    return (this.speed = this.speed / 1.6);
+  }
+
+  accelerate() {
+    console.log((this.speed += 10));
+  }
+
+  brake() {
+    console.log((this.speed -= 5));
+  }
+
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
+}
+
+const car1 = new CarCl('Ford', 120);
+console.log(car1.speedUS);
+car1.speedUS = 50;
+console.log(car1);
 // Object.create
 
 const PersonProto = {
@@ -22,7 +52,6 @@ const laura = Object.create(PersonProto);
 laura.init('Laura', 1975);
 laura.calcAge();
 
-/*
 // Classes expression
 // const PersonCl = class {};
 
