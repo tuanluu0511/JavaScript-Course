@@ -1,5 +1,33 @@
 'use strict';
 
+// Inheritance between classes : Object.create
+
+const PersonProto = {
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  },
+
+  init(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  },
+};
+
+const StudentProto = Object.create(PersonProto);
+StudentProto.init = function (fullName, birthYear, course) {
+  PersonProto.init.call(this, fullName, birthYear);
+  this.course = course;
+};
+
+StudentProto.introduce = function () {
+  console.log(`Hi I'm ${this.fullName}, i study ${this.course}`);
+};
+
+const thomas = Object.create(StudentProto);
+thomas.init('Thomas Toy', 2015, 'Back End');
+thomas.introduce();
+thomas.calcAge();
+/*
 // Inheritance between classes: ES6 Classes
 class PersonCl {
   constructor(fullName, birthYear) {
@@ -41,6 +69,7 @@ class PersonCl {
 
 class StudentCl extends PersonCl {
   constructor(fullName, birthYear, course) {
+    // Always this line first
     super(fullName, birthYear);
     this.course = course;
   }
@@ -57,7 +86,6 @@ const Alan = new StudentCl('Alan Greenspan', 1970, 'Computer Science');
 Alan.greeting();
 Alan.caclAge();
 
-/*
 // CODING CHALLENGE 3:
 
 const Car = function (make, speed) {
