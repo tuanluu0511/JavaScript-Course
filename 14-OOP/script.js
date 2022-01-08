@@ -1,5 +1,63 @@
 'use strict';
 
+// Inheritance between classes: ES6 Classes
+class PersonCl {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+
+  // Instance methods
+  // Methods will be added to .prototype property
+  caclAge() {
+    console.log(2037 - this.birthYear);
+  }
+
+  greeting() {
+    console.log(`Hello ${this.fullName}`);
+  }
+
+  get age() {
+    return 2037 - this.birthYear;
+  }
+
+  // Set a property that already exists
+  set fullName(name) {
+    if (name.includes(' ')) this._fullName = name;
+    else {
+      console.log(`You entered a wrong name!`);
+    }
+  }
+
+  get fullName() {
+    return (this.fullName = this._fullName);
+  }
+  // Static method
+  static hey() {
+    console.log('Hey there');
+    console.log(this);
+  }
+}
+
+class StudentCl extends PersonCl {
+  constructor(fullName, birthYear, course) {
+    super(fullName, birthYear);
+    this.course = course;
+  }
+
+  caclAge() {
+    console.log(
+      `I'm ${2021 - this.birthYear} years old. But I feel still so young`
+    );
+  }
+}
+
+const Alan = new StudentCl('Alan Greenspan', 1970, 'Computer Science');
+// console.log(Alan);
+Alan.greeting();
+Alan.caclAge();
+
+/*
 // CODING CHALLENGE 3:
 
 const Car = function (make, speed) {
@@ -42,7 +100,7 @@ maxEv.accelerate();
 // console.log(maxEv);
 // console.dir(EV.prototype.constructor);
 
-/*
+////////////////////////////////////////////
 // Inheritance Between "Classes": Constructor Functions
 
 const Person = function (fullName, birthYear) {
