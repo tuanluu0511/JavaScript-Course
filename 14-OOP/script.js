@@ -1,6 +1,50 @@
 'use strict';
 
+// CODING CHALLENGE 3:
+
+const Car = function (make, speed) {
+  this.make = make;
+  this.speed = speed;
+};
+
+Car.prototype.accelerate = function () {
+  console.log((this.speed += 10));
+};
+
+Car.prototype.brake = function () {
+  console.log((this.speed -= 5));
+};
+const EV = function (make, speed, charge) {
+  Car.call(this, make, speed);
+  this.charge = charge;
+};
+
+EV.prototype = Object.create(Car.prototype);
+EV.prototype.constructor = EV;
+
+EV.prototype.chargeBattery = function (chargeTo) {
+  this.charge = chargeTo;
+};
+
+EV.prototype.accelerate = function () {
+  this.speed += 20;
+  this.charge -= 1;
+  return console.log(
+    `Tesla is going at ${this.speed} km/h, with a charge of ${this.charge}%`
+  );
+};
+
+const maxEv = new EV('Tesla', 120, 23);
+maxEv.accelerate();
+maxEv.brake();
+maxEv.accelerate();
+maxEv.accelerate();
+// console.log(maxEv);
+// console.dir(EV.prototype.constructor);
+
+/*
 // Inheritance Between "Classes": Constructor Functions
+
 const Person = function (fullName, birthYear) {
   this.fullName = fullName;
   this.birthYear = birthYear;
@@ -28,7 +72,6 @@ Student.prototype.constructor = Student;
 max.introduce();
 max.caclAge();
 console.dir(Student.prototype.constructor);
-/*
 // CODING CHALLENGE 2
 
 class CarCl {
