@@ -1,47 +1,67 @@
 'use strict';
+
+// Private class field and method
+
+// 1.Public fields(instances)
+// 2.Private fields
+// 3.Public methods
+// 4.Private methods
+// (there is also static version)
+
 // Encapsulation: Protected properties and methods
 
 //Clases Example:
 
 class Account {
+  //1.Public fields
+  locale = navigator.language;
+  // 2. Private fields
+  #movements = [];
+  #pin;
+
   constructor(owner, currency, pin) {
     this.owner = owner;
     this.currency = currency;
     // Protected properties:
-    this._pin = pin;
-    this._movements = [];
-    this.locale = navigator.language;
+    this.#pin = pin;
   }
 
+  // 3. Public methods
+  // Public interface
   getMovements() {
-    return this._movements;
+    return this.#movements;
   }
 
   deposit(val) {
-    this._movements.push(val);
+    this.#movements.push(val);
   }
 
   withdrawl(val) {
     this.deposit(-val);
   }
 
-  _approveLoan(val) {
-    return true;
-  }
-
   requestLoan(val) {
+    // if (this.#approveLoan) {
     if (this._approveLoan) {
       this.deposit(val);
       console.log('Your Loan is approved');
     }
+  }
+  // 4. Private methods
+  // #approveLoan(val) {
+  _approveLoan(val) {
+    return true;
   }
 }
 
 const acc1 = new Account('Max', 'USD', 1111);
 acc1.deposit(200);
 console.log(acc1);
+// console.log(acc1.#approveLoan);
+// console.log(acc1.#movements);
+// console.log(acc1.#pin);
 
-acc1.requestLoan(500);
+// acc1.requestLoan(500);
 /*
 
 // Inheritance between classes : Object.create
