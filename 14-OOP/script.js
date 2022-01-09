@@ -1,5 +1,57 @@
 'use strict';
 
+// CODING CHALLENGE 4:
+
+class CarCl {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+
+  accelerate() {
+    console.log((this.speed += 10));
+    return this;
+  }
+
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} is going at ${this.speed} km/h`);
+    return this;
+  }
+}
+
+class EVCl extends CarCl {
+  #charge;
+  constructor(make, speed, charge) {
+    super(make, speed);
+    this.#charge = charge;
+  }
+
+  getCharge() {
+    return this.#charge;
+  }
+
+  chargeBattery(chargeTo) {
+    this.#charge = chargeTo;
+    return this;
+  }
+
+  accelerate() {
+    this.speed += 20;
+    this.#charge -= 1;
+    console.log(
+      `${this.make} is going at ${
+        this.speed
+      } km/h, with a charge of ${this.getCharge()}%`
+    );
+    return this;
+  }
+}
+
+const rivian = new EVCl('Rivian', 120, 23);
+console.log(rivian);
+rivian.accelerate().brake().chargeBattery(50).accelerate().brake();
+/*
 // Private class field and method
 
 // 1.Public fields(instances)
@@ -69,7 +121,6 @@ console.log(acc1);
 acc1.deposit(400).withdrawl(100).deposit(500).requestLoan(5000).withdrawl(3000);
 
 console.log(acc1.getMovements());
-/*
 
 // Inheritance between classes : Object.create
 
@@ -156,6 +207,7 @@ const Alan = new StudentCl('Alan Greenspan', 1970, 'Computer Science');
 Alan.greeting();
 Alan.caclAge();
 
+//////////////////////////////////////
 // CODING CHALLENGE 3:
 
 const Car = function (make, speed) {
