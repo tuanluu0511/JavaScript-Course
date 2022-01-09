@@ -1,4 +1,48 @@
 'use strict';
+// Encapsulation: Protected properties and methods
+
+//Clases Example:
+
+class Account {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    // Protected properties:
+    this._pin = pin;
+    this._movements = [];
+    this.locale = navigator.language;
+  }
+
+  getMovements() {
+    return this._movements;
+  }
+
+  deposit(val) {
+    this._movements.push(val);
+  }
+
+  withdrawl(val) {
+    this.deposit(-val);
+  }
+
+  _approveLoan(val) {
+    return true;
+  }
+
+  requestLoan(val) {
+    if (this._approveLoan) {
+      this.deposit(val);
+      console.log('Your Loan is approved');
+    }
+  }
+}
+
+const acc1 = new Account('Max', 'USD', 1111);
+acc1.deposit(200);
+console.log(acc1);
+
+acc1.requestLoan(500);
+/*
 
 // Inheritance between classes : Object.create
 
@@ -6,7 +50,7 @@ const PersonProto = {
   calcAge() {
     console.log(2037 - this.birthYear);
   },
-
+  
   init(fullName, birthYear) {
     this.fullName = fullName;
     this.birthYear = birthYear;
@@ -27,7 +71,6 @@ const thomas = Object.create(StudentProto);
 thomas.init('Thomas Toy', 2015, 'Back End');
 thomas.introduce();
 thomas.calcAge();
-/*
 // Inheritance between classes: ES6 Classes
 class PersonCl {
   constructor(fullName, birthYear) {
