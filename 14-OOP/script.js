@@ -34,10 +34,12 @@ class Account {
 
   deposit(val) {
     this.#movements.push(val);
+    return this;
   }
 
   withdrawl(val) {
     this.deposit(-val);
+    return this;
   }
 
   requestLoan(val) {
@@ -45,6 +47,7 @@ class Account {
     if (this._approveLoan) {
       this.deposit(val);
       console.log('Your Loan is approved');
+      return this;
     }
   }
   // 4. Private methods
@@ -62,6 +65,10 @@ console.log(acc1);
 // console.log(acc1.#pin);
 
 // acc1.requestLoan(500);
+// Chaining
+acc1.deposit(400).withdrawl(100).deposit(500).requestLoan(5000).withdrawl(3000);
+
+console.log(acc1.getMovements());
 /*
 
 // Inheritance between classes : Object.create
