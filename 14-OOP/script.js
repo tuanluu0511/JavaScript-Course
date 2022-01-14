@@ -1,5 +1,6 @@
 'use strict';
 
+/*
 // CODING CHALLENGE 4:
 
 class CarCl {
@@ -51,7 +52,6 @@ class EVCl extends CarCl {
 const rivian = new EVCl('Rivian', 120, 23);
 console.log(rivian);
 rivian.accelerate().brake().chargeBattery(50).accelerate().brake();
-/*
 // Private class field and method
 
 // 1.Public fields(instances)
