@@ -26,6 +26,7 @@ const renderCountry = function (data, className = '') {
   countriesContainer.style.opacity = 1;
 };
 
+/*
 const getNeighbourCountry = function (country) {
   const request = new XMLHttpRequest();
   request.open('GET', `https://restcountries.com/v2/name/${country}`);
@@ -58,3 +59,12 @@ const getNeighbourCountry = function (country) {
 };
 
 getNeighbourCountry('usa');
+*/
+
+const getCountryData = function (country) {
+  fetch(`https://restcountries.com/v2/name/${country}`)
+    .then(response => response.json())
+    .then(data => renderCountry(data[0]));
+};
+
+getCountryData('usa');
