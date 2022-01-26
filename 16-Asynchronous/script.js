@@ -1,5 +1,7 @@
 'use strict';
 
+// CODING CHALLENGE 1:
+
 const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
@@ -8,24 +10,66 @@ const countriesContainer = document.querySelector('.countries');
 const renderCountry = function (data, className = '') {
   const html = `
   <article class="country ${className}">
-          <img class="country__img" src="${data.flags.png}" />
-          <div class="country__data">
-            <h3 class="country__name">${data.name}</h3>
-            <h4 class="country__region">${data.region}</h4>
-            <p class="country__row"><span>👫</span>${(
-              +data.population / 1000000
-            ).toFixed(1)}</p>
-            <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
-            <p class="country__row"><span>💰</span>${
-              data.currencies[0].name
-            }</p>
-          </div>
-        </article>
-        `;
+  <img class="country__img" src="${data.flags.png}" />
+  <div class="country__data">
+  <h3 class="country__name">${data.name}</h3>
+  <h4 class="country__region">${data.region}</h4>
+  <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(
+    1
+  )}</p>
+    <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+    <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+    </div>
+    </article>
+    `;
   countriesContainer.insertAdjacentHTML('beforeend', html);
-  // countriesContainer.style.opacity = 1;
+  countriesContainer.style.opacity = 1;
 };
 
+const whereAmI = function (lat, lng) {
+  fetch(
+    `https://opencage-geocoder.p.rapidapi.com/geocode/v1/json?q=${lat}%2C%20${lng}&key=35e1ba02dd6e4456bbdd02ec26edad9a&language=en`,
+    {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-host': 'opencage-geocoder.p.rapidapi.com',
+        'x-rapidapi-key': '4c5958fe44mshea1bb3953d5688ap1dc0c1jsn32c1ff872b42',
+      },
+    }
+  )
+    .then(response => {
+      console.log(response);
+      if (!response.ok)
+        throw new Error(`We ran into a problem! ${response.message}`);
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+
+      if (!data.results[0].components.country)
+        throw new Error(
+          `Country not found! ${data.status.message} (${data.status.code})`
+        );
+
+      console.log(
+        `You are in ${data.results[0].components.city}, ${data.results[0].components.country}`
+      );
+      // Take country from data and fetch it fr restcountry API
+      const country = data.results[0].components.country;
+      return fetch(`https://restcountries.com/v2/name/${country}`);
+    })
+    .then(res => res.json())
+    .then(data => renderCountry(data[0])) //Render country
+    .catch(err => {
+      console.error(err.message);
+    });
+};
+
+whereAmI(52.508, 13.381);
+whereAmI(19.037, 72.873);
+whereAmI(-33.933, 18.474);
+
+/*
 const renderError = function (msg) {
   countriesContainer.insertAdjacentText('beforeend', msg);
   // countriesContainer.style.opacity = 1;
@@ -68,7 +112,6 @@ btn.addEventListener('click', function () {
 
 getCountryData('australia');
 
-/*
 const getNeighbourCountry = function (country) {
   const request = new XMLHttpRequest();
   request.open('GET', `https://restcountries.com/v2/name/${country}`);
