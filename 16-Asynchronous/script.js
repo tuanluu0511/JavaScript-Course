@@ -1,5 +1,38 @@
 'use strict';
 
+// Build a simple promise
+const lotteryPromise = new Promise(function (resolve, reject) {
+  console.log(`Lottery never draw!`);
+
+  setTimeout(() => {
+    if (Math.random() >= 0.5) {
+      resolve('You won!!!');
+    } else {
+      reject(new Error('You lost!!!'));
+    }
+  }, 2000);
+});
+
+lotteryPromise.then(res => console.log(res)).catch(err => console.log(err));
+
+// Promisifying setTimeout
+
+const wait = second => {
+  return new Promise(resolve => {
+    setTimeout(resolve, second * 1000);
+  });
+};
+
+wait(2)
+  .then(() => {
+    console.log('I have waited for 2 seconds');
+    return wait(3);
+  })
+  .then(() => console.log('I have waited for 5 seconds'));
+
+Promise.resolve('abc').then(x => console.log(x));
+Promise.reject(new Error('Problem!')).then(x => console.log(x));
+/*
 // The event loop in practice:
 console.log('Start code');
 setTimeout(() => console.log('0 timer'), 0);
@@ -9,7 +42,6 @@ Promise.resolve('Promise 2').then(res => {
 });
 console.log('End code');
 
-/*
 // CODING CHALLENGE 1:
 
 const btn = document.querySelector('.btn-country');
