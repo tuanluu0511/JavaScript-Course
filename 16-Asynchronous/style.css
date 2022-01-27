@@ -21,6 +21,7 @@ body {
 }
 
 .container {
+  max-width: 114rem;
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -114,7 +115,7 @@ body {
 
 .images img {
   display: block;
-  width: 80rem;
+  width: 80%;
   margin: 4rem;
 }
 
