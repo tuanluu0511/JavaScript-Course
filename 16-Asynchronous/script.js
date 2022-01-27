@@ -1,5 +1,106 @@
 'use strict';
 
+const btn = document.querySelector('.btn-country');
+const countriesContainer = document.querySelector('.countries');
+
+const renderCountry = function (data, className = '') {
+  const html = `
+  <article class="country ${className}">
+  <img class="country__img" src="${data.flags.png}" />
+  <div class="country__data">
+  <h3 class="country__name">${data.name}</h3>
+  <h4 class="country__region">${data.region}</h4>
+  <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(
+    1
+  )}</p>
+    <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+    <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+    </div>
+    </article>
+    `;
+  countriesContainer.insertAdjacentHTML('beforeend', html);
+  countriesContainer.style.opacity = 1;
+};
+
+// Promisifying the Geo location API
+
+// navigator.geolocation.getCurrentPosition(
+//   position => console.log(position),
+//   err => console.log(err)
+// );
+
+const positionPromise = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      resolve,
+      reject
+      // position => resolve(position),
+      // err => reject(err)
+    );
+  });
+};
+
+// positionPromise().then(res => {
+//   console.log(res);
+//   // const lat = res.coords.latitude;
+//   // console.log(lat);
+// });
+
+// Render country base on navigator's position
+const whereAmI = function () {
+  positionPromise()
+    .then(res => {
+      // console.log(res.coords);
+      // const { latitude: lat,longitude: lng } = res.coords;
+
+      return fetch(
+        `https://opencage-geocoder.p.rapidapi.com/geocode/v1/json?q=${res.coords.latitude}%2C%20${res.coords.longitude}&key=35e1ba02dd6e4456bbdd02ec26edad9a&language=en`,
+        {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-host': 'opencage-geocoder.p.rapidapi.com',
+            'x-rapidapi-key':
+              '4c5958fe44mshea1bb3953d5688ap1dc0c1jsn32c1ff872b42',
+          },
+        }
+      );
+    })
+    .then(response => {
+      // console.log(response);
+      if (!response.ok)
+        throw new Error(`We ran into a problem! ${response.message}`);
+      return response.json();
+    })
+    .then(data => {
+      // console.log(data);
+
+      if (!data.results[0].components.country)
+        throw new Error(
+          `Country not found! ${data.status.message} (${data.status.code})`
+        );
+
+      const place = data.results[0].components.city
+        ? data.results[0].components.city
+        : data.results[0].components.town;
+
+      console.log(`You are in ${place}, ${data.results[0].components.country}`);
+      // Take country from data and fetch it fr restcountry API
+      const country = data.results[0].components.country;
+      return fetch(`https://restcountries.com/v2/name/${country}`);
+    })
+    .then(res => res.json())
+    .then(data => {
+      renderCountry(data[0]);
+      // console.log(data[0]);
+    }) //Render country
+    .catch(err => {
+      console.error(err.message);
+    });
+};
+
+whereAmI();
+
+/*
 // Build a simple promise
 const lotteryPromise = new Promise(function (resolve, reject) {
   console.log(`Lottery never draw!`);
@@ -31,8 +132,7 @@ wait(2)
   .then(() => console.log('I have waited for 5 seconds'));
 
 Promise.resolve('abc').then(x => console.log(x));
-Promise.reject(new Error('Problem!')).then(x => console.log(x));
-/*
+Promise.reject(new Error('Problem!')).catch(x => console.log(x));
 // The event loop in practice:
 console.log('Start code');
 setTimeout(() => console.log('0 timer'), 0);
