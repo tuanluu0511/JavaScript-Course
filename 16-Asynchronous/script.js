@@ -1,5 +1,60 @@
 'use strict';
 
+const btn = document.querySelector('.btn-country');
+const countriesContainer = document.querySelector('.countries');
+
+const renderCountry = function (data, className = '') {
+  const html = `
+  <article class="country ${className}">
+  <img class="country__img" src="${data.flags.png}" />
+  <div class="country__data">
+  <h3 class="country__name">${data.name}</h3>
+  <h4 class="country__region">${data.region}</h4>
+  <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(
+    1
+  )}</p>
+    <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+    <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+    </div>
+    </article>
+    `;
+  countriesContainer.insertAdjacentHTML('beforeend', html);
+  countriesContainer.style.opacity = 1;
+};
+
+const getPosition = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+};
+
+const whereAmI = async function () {
+  const res = await getPosition();
+  const { latitude: lat, longitude: lng } = res.coords;
+
+  const posGeo = await fetch(
+    `https://opencage-geocoder.p.rapidapi.com/geocode/v1/json?q=${lat}%2C%20${lng}&key=35e1ba02dd6e4456bbdd02ec26edad9a&language=en`,
+    {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-host': 'opencage-geocoder.p.rapidapi.com',
+        'x-rapidapi-key': '4c5958fe44mshea1bb3953d5688ap1dc0c1jsn32c1ff872b42',
+      },
+    }
+  );
+
+  const dataGeo = await posGeo.json();
+
+  const country = dataGeo.results[0].components.country;
+
+  // Country data
+  const pos = await fetch(`https://restcountries.com/v2/name/${country}`);
+  const data = await pos.json();
+  renderCountry(data[0]);
+};
+
+whereAmI();
+/*
 // CODING CHALLENGE 2:
 
 // Your tasks:
@@ -74,7 +129,6 @@ createImage('img/img-1.jpg')
     createImage('img/img-3.jpg');
   });
 
-/*
 
 
 // Self code:
