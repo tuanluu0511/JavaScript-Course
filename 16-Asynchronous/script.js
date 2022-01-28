@@ -58,18 +58,39 @@ const whereAmI = async function () {
 
     // Country data
     const pos = await fetch(`https://restcountries.com/v2/name/${country}`);
-
     if (!pos.ok) throw new Error(`Problem getting country data`);
 
     const data = await pos.json();
     renderCountry(data[0]);
+
+    return `You're in ${dataGeo.results[0].components.country}`;
   } catch (err) {
     console.error(`${err}*************`);
     renderError(`${err.message}***********`);
+
+    throw err;
   }
 };
 
-whereAmI();
+console.log('1. Will get location');
+
+// whereAmI()
+//   .then(res => console.log(`2.${res}`))
+//   .catch(err => {
+//     console.log(`2.${err.message}`);
+//   })
+//   .finally(() => console.log('3. Finished getting location'));
+
+(async function () {
+  try {
+    const country = await whereAmI();
+    console.log(`2.${country}`);
+  } catch (err) {
+    console.log(`2.${err.message}`);
+  }
+  console.log('3. Finished getting location');
+})();
+
 /*
 // CODING CHALLENGE 2:
 
