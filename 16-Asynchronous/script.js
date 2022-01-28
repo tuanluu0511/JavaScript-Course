@@ -22,6 +22,11 @@ const renderCountry = function (data, className = '') {
   countriesContainer.style.opacity = 1;
 };
 
+const renderError = function (msg) {
+  countriesContainer.insertAdjacentText('beforeend', msg);
+  countriesContainer.style.opacity = 1;
+};
+
 const getPosition = () => {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -29,28 +34,39 @@ const getPosition = () => {
 };
 
 const whereAmI = async function () {
-  const res = await getPosition();
-  const { latitude: lat, longitude: lng } = res.coords;
+  //Geolocation
+  try {
+    const res = await getPosition();
+    const { latitude: lat, longitude: lng } = res.coords;
 
-  const posGeo = await fetch(
-    `https://opencage-geocoder.p.rapidapi.com/geocode/v1/json?q=${lat}%2C%20${lng}&key=35e1ba02dd6e4456bbdd02ec26edad9a&language=en`,
-    {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-host': 'opencage-geocoder.p.rapidapi.com',
-        'x-rapidapi-key': '4c5958fe44mshea1bb3953d5688ap1dc0c1jsn32c1ff872b42',
-      },
-    }
-  );
+    // Reverse geocoding
+    const posGeo = await fetch(
+      `https://opencage-geocoder.p.rapidapi.com/geocode/v1/json?q=${lat}%2C%20${lng}&key=35e1ba02dd6e4456bbdd02ec26edad9a&language=en`,
+      {
+        method: 'GET',
+        headers: {
+          'x-rapidapi-host': 'opencage-geocoder.p.rapidapi.com',
+          'x-rapidapi-key':
+            '4c5958fe44mshea1bb3953d5688ap1dc0c1jsn32c1ff872b42',
+        },
+      }
+    );
+    if (!posGeo.ok) throw new Error(`Problem getting location data`);
 
-  const dataGeo = await posGeo.json();
+    const dataGeo = await posGeo.json();
+    const country = dataGeo.results[0].components.country;
 
-  const country = dataGeo.results[0].components.country;
+    // Country data
+    const pos = await fetch(`https://restcountries.com/v2/name/${country}`);
 
-  // Country data
-  const pos = await fetch(`https://restcountries.com/v2/name/${country}`);
-  const data = await pos.json();
-  renderCountry(data[0]);
+    if (!pos.ok) throw new Error(`Problem getting country data`);
+
+    const data = await pos.json();
+    renderCountry(data[0]);
+  } catch (err) {
+    console.error(`${err}*************`);
+    renderError(`${err.message}***********`);
+  }
 };
 
 whereAmI();
