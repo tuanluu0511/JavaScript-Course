@@ -42,6 +42,56 @@ const getPosition = () => {
   });
 };
 
+//Promise.any [ES2021] : Return the 1st fullfill value:
+Promise.any([
+  Promise.resolve('Success'),
+  Promise.reject('Error'),
+  Promise.resolve('Another success'),
+])
+  .then(res => console.log(res))
+  .catch(err => console.log(err));
+
+//Promise.allSettled:Return all the return value as an array
+Promise.allSettled([
+  Promise.resolve('Success'),
+  Promise.reject('Error'),
+  Promise.resolve('Another success'),
+]).then(res => console.log(res));
+
+//Promise.all: Return the all the fullfill value as an array, short circuit if have a rejected
+Promise.all([
+  Promise.resolve('Success'),
+  Promise.reject('Error'),
+  Promise.resolve('Another success'),
+])
+  .then(res => console.log(res))
+  .catch(err => console.log(err));
+
+//Promise race: Return the first loaded value(fullfill or rejected)
+(async function () {
+  const res = await Promise.race([
+    getJSON(`https://restcountries.com/v2/name/usa`),
+    getJSON(`https://restcountries.com/v2/name/mexico`),
+    getJSON(`https://restcountries.com/v2/name/canada`),
+  ]);
+
+  console.log(res[0]);
+})();
+//Rejected after a specific of time:
+const timeout = function (sec) {
+  return new Promise((_, reject) => {
+    setTimeout(() => {
+      reject(new Error('Request timeout'));
+    }, sec * 1000);
+  });
+};
+// Return the timeout function if the loadtime too long
+Promise.race([getJSON(`https://restcountries.com/v2/name/usa`), timeout(5)])
+  .then(res => console.log(res[0]))
+  .catch(err => console.log(err));
+
+/*
+// Run promises in parallel: 
 const get3Countries = async function (c1, c2, c3) {
   try {
     // const [data1] = await getJSON(`https://restcountries.com/v2/name/${c1}`);
@@ -65,7 +115,6 @@ const get3Countries = async function (c1, c2, c3) {
 
 get3Countries('usa', 'canada', 'mexico');
 
-/*
 const whereAmI = async function () {
   //Geolocation
   try {
