@@ -18,3 +18,22 @@ add('orange', 5);
 add('cocacola', 5);
 
 console.log(cart);
+
+// const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+// const data = await res.json();
+// console.log(data);
+
+const getLastPost = async function () {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const data = await res.json();
+
+  return { title: data.at(-1).title, text: data.at(-1).body };
+};
+
+// Not clean
+// const lastPost = getLastPost().then(last => {
+//   console.log(last);
+// });
+
+const lastPost = await getLastPost();
+console.log(lastPost);
