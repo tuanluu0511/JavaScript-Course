@@ -2,7 +2,7 @@
 // import { addToCart, totalPrice as price, tq } from './shoppingCart.js';
 // addToCart('bread', 5);
 // console.log(price, tq);
-
+/*
 console.log('Importing module');
 // import * as shoppingCart from './shoppingCart.js';
 
@@ -36,4 +36,32 @@ const getLastPost = async function () {
 // });
 
 const lastPost = await getLastPost();
-console.log(lastPost);
+console.log(lastPost); */
+
+const shoppingCart2 = (function () {
+  const cart = [];
+  const totalPrice = 230;
+  const totalQuantiy = 10;
+  const shippingCost = 10;
+  const addToCart = function (product, quantity) {
+    cart.push({ product, quantity });
+    console.log(`${quantity} ${product} added to cart!`);
+  };
+
+  const orderStock = function (product, quantity) {
+    cart.push({ product, quantity });
+    console.log(`${quantity} ${product} ordered from suplier`);
+  };
+
+  return {
+    cart,
+    totalPrice,
+    totalQuantiy,
+    addToCart,
+  };
+})();
+
+shoppingCart2.addToCart('Apple', 2);
+shoppingCart2.addToCart('Banana', 5);
+
+console.log(shoppingCart2);
