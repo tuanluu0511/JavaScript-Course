@@ -2,14 +2,21 @@
   "name": "17-modern-js-modules-tooling",
   "version": "1.0.0",
   "description": "",
-  "main": "clean.js",
+  "main": "script.js",
+  "targets": {
+    "main": false
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "author": "Vy",
   "license": "ISC",
   "dependencies": {
     "leaflet": "^1.7.1",
     "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "parcel": "^2.2.1"
   }
 }
