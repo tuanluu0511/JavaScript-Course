@@ -103,3 +103,14 @@ console.log(stateDeepClone); //logginIn: true
 if (module.hot) {
   module.hot.accept();
 }
+
+console.log(cart.find(el => el.quantity >= 2));
+Promise.resolve('Test').then(x => console.log(x));
+
+//Libary to convert ES6 feature to ES5 (Promise etc..)
+import 'core-js/stable';
+// import 'core-js/stable/array/find';
+// import 'core-js/stable/promise';
+
+// Polifilling async function
+import 'regenerator-runtime/runtime';
