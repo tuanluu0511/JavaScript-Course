@@ -65,7 +65,6 @@ shoppingCart2.addToCart('Apple', 2);
 shoppingCart2.addToCart('Banana', 5);
 
 console.log(shoppingCart2);
-*/
 
 //Common JS 
 //Export 
@@ -77,3 +76,24 @@ export.addToCart = function (product, quantity) {
 //Import 
 const {addToCart} = require('./shoppingCart.js');
 
+*/
+
+import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+
+const state = {
+  cart: [
+    { product: 'bread', quantity: 5 },
+    { product: 'apple', quantity: 5 },
+  ],
+  user: { logginIn: 'true' },
+};
+
+// Casual way to deep copy an object :
+const stateClone = Object.assign({}, state);
+// cloneDeep
+const stateDeepClone = cloneDeep(state);
+
+state.user.logginIn = 'false';
+
+console.log(stateClone); //logginIn: false
+console.log(stateDeepClone); //logginIn: true
