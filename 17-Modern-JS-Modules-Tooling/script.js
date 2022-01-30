@@ -36,7 +36,7 @@ const getLastPost = async function () {
 // });
 
 const lastPost = await getLastPost();
-console.log(lastPost); */
+console.log(lastPost); 
 
 const shoppingCart2 = (function () {
   const cart = [];
@@ -47,12 +47,12 @@ const shoppingCart2 = (function () {
     cart.push({ product, quantity });
     console.log(`${quantity} ${product} added to cart!`);
   };
-
+  
   const orderStock = function (product, quantity) {
     cart.push({ product, quantity });
     console.log(`${quantity} ${product} ordered from suplier`);
   };
-
+  
   return {
     cart,
     totalPrice,
@@ -65,3 +65,15 @@ shoppingCart2.addToCart('Apple', 2);
 shoppingCart2.addToCart('Banana', 5);
 
 console.log(shoppingCart2);
+*/
+
+//Common JS 
+//Export 
+export.addToCart = function (product, quantity) {
+  cart.push({ product, quantity });
+  console.log(`${quantity} ${product} added to cart!`);
+};
+
+//Import 
+const {addToCart} = require('./shoppingCart.js');
+
